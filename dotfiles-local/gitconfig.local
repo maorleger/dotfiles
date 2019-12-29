@@ -1,3 +1,15 @@
+[color]
+  ui = true
 [user]
   name = Maor Leger
-  email = malege@microsoft.com
+  email = maor.leger@gmail.com
+[alias]
+  co = checkout
+  ci = commit
+[core]
+  editor = vim
+  excludesfile = ~/.global_ignore
+[credential]
+  helper = cache --timeout=3600
+[push]
+  default = simple

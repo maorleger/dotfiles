@@ -1,0 +1,62 @@
+" These two go together, leave commented for now and see
+" Plug 'google/vim-maktaba'
+" Plug 'google/vim-codefmt'
+
+Plug 'benmills/vimux'
+
+" Consider deleting this too
+" Plug 'bkad/CamelCaseMotion'
+" Plug 'dewyze/vim-ruby-block-helpers'
+
+""""""""""""""""""""""""""""""""""""""""
+" Language plugins
+""""""""""""""""""""""""""""""""""""""""
+Plug 'ekalinin/Dockerfile.vim'
+" Ruby (Rails and Ruby plugins defined in vimrc.bundles)
+Plug 'nelstrom/vim-textobj-rubyblock'
+Plug 'jgdavey/vim-turbux'  " Faster vimux for Ruby
+" JavaScript
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
+Plug 'hashivim/vim-terraform'
+Plug 'jtratner/vim-flavored-markdown'
+Plug 'lmeijvogel/vim-yaml-helper'
+Plug 'mileszs/ack.vim'
+" TypeScript
+Plug 'leafgarland/typescript-vim'
+" HTML
+Plug 'tpope/vim-ragtag'
+
+
+""""""""""""""""""""""""""""""""""""""""
+" Utilities
+""""""""""""""""""""""""""""""""""""""""
+Plug 'craigemery/vim-autotag'
+Plug 'henrik/vim-indexed-search'
+Plug 'itchyny/lightline.vim'
+Plug 'jlanzarotta/bufexplorer'
+Plug 'kana/vim-textobj-user'
+Plug 'kien/rainbow_parentheses.vim'
+Plug 'scrooloose/nerdtree'
+Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-vinegar'
+Plug 'vim-scripts/Align'
+Plug 'vim-scripts/groovyindent-unix'
+Plug 'vim-scripts/mako.vim'
+Plug 'vim-scripts/matchit.zip'
+Plug 'tweekmonster/wstrip.vim'
+
+"""""""""""""""""""""""""""""""""""""""""
+" Colorschemes
+"""""""""""""""""""""""""""""""""""""""""
+Plug 'rakr/vim-one'
+Plug 'chriskempson/base16-vim'
+
+""""""""""""""""""""""""""""""""""""""""
+" Linters
+""""""""""""""""""""""""""""""""""""""""
+Plug 'w0rp/ale'
