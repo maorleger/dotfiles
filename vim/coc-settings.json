@@ -1,0 +1,27 @@
+{
+  "suggest.timeout": 500,
+  "coc.preferences.hoverTarget": "preview",
+  "suggest.enablePreview": true,
+  "suggest.echodocSupport": true,
+  "coc.preferences.formatOnSaveFiletypes": [
+    "elixir",
+    "eelixir",
+    "javascript",
+    "html",
+    "css",
+    "cs"
+  ],
+  "languageserver": {
+    "OmniSharp": {
+      "command": "/mnt/c/workspace/omnisharp/OmniSharp.exe",
+      "filetypes": ["cs"],
+      "args": ["-lsp"]
+    }
+  },
+  "codeLens.enable": true,
+  "eslint.autoFixOnSave": true,
+  "diagnostic-languageserver.filetypes": {
+  },
+  "diagnostic-languageserver.formatFiletypes": {
+  }
+}
