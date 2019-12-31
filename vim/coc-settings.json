@@ -12,11 +12,6 @@
     "cs"
   ],
   "languageserver": {
-    "OmniSharp": {
-      "command": "/mnt/c/workspace/omnisharp/OmniSharp.exe",
-      "filetypes": ["cs"],
-      "args": ["-lsp"]
-    }
   },
   "codeLens.enable": true,
   "eslint.autoFixOnSave": true,
