@@ -1,8 +1,5 @@
 [color]
   ui = true
-[user]
-  name = Maor Leger
-  email = maor.leger@gmail.com
 [alias]
   co = checkout
   ci = commit
