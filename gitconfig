@@ -29,7 +29,6 @@
 [diff]
   colorMoved = zebra
 [user]
-	email = malege@microsoft.com
 	name = Maor Leger
 [credential]
 	helper = /mnt/c/Program\\ Files/Git/mingw64/libexec/git-core/git-credential-manager.exe
