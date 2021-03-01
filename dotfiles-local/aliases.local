@@ -25,3 +25,5 @@ alias be="bundle exec"
 
 # git
 alias gst="git status -v"
+
+alias withenv='env $(cat .env | xargs)'
