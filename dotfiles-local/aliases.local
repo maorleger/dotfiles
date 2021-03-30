@@ -5,6 +5,8 @@ alias brewlove="brew update && brew upgrade && brew cleanup; brew doctor"
 alias gap="git add -p"
 alias gpp="git pull --rebase && git push"
 alias gst="git status"
+alias gup="git fetch upstream && git rebase upstream/master"
+alias gst="git status"
 
 # DBs
 alias startpg="pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start"
@@ -22,8 +24,5 @@ alias tf="terraform"
 
 # ruby
 alias be="bundle exec"
-
-# git
-alias gst="git status -v"
 
 alias withenv='env $(cat .env | xargs)'
