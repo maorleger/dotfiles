@@ -5,8 +5,10 @@ alias brewlove="brew update && brew upgrade && brew cleanup; brew doctor"
 alias gap="git add -p"
 alias gpp="git pull --rebase && git push"
 alias gst="git status"
-alias gup="git fetch upstream && git rebase upstream/master"
+alias gup="git fetch upstream && git rebase upstream/main"
 alias gst="git status"
+alias gci="git commit"
+alias gd="git diff"
 
 # DBs
 alias startpg="pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start"
