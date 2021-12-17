@@ -27,4 +27,6 @@ alias tf="terraform"
 # ruby
 alias be="bundle exec"
 
+# work
 alias withenv='env $(cat .env | xargs)'
+alias r=rush
