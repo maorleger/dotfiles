@@ -11,9 +11,7 @@ shareKeyVaultEnv() {
 }
 
 updateDotEnv() {
-  # Replace PowerShell syntax ${env:VARIABLE} with the unix syntax
   sed -i -e 's/\${env:\([A-Z_]*\)} = /\1=/g' \
-  # Replace well-known variables with their replacements
   -e 's/[A-Z][A-Z]*_CLIENT_ID=/AZURE_CLIENT_ID=/g' \
   -e 's/[A-Z][A-Z]*_TENANT_ID=/AZURE_TENANT_ID=/g' \
   -e 's/[A-Z][A-Z]*_CLIENT_SECRET=/AZURE_CLIENT_SECRET=/g' "$1"
