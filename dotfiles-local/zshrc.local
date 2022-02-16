@@ -1,46 +1,10 @@
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-shareKeyVaultEnv() {
-  cp ~/workspace/dotenv/keyvault.env "$1/sdk/keyvault/keyvault-keys/.env"
-  cp ~/workspace/dotenv/keyvault.env "$1/sdk/keyvault/keyvault-secrets/.env"
-  cp ~/workspace/dotenv/keyvault.env "$1/sdk/keyvault/keyvault-certificates/.env"
-  cp ~/workspace/dotenv/keyvault.env "$1/sdk/keyvault/keyvault-admin/.env"
-  echo "done"
-}
-
-updateDotEnv() {
-  sed -i -e 's/\${env:\([A-Z_]*\)} = /\1=/g' \
-  -e 's/[A-Z][A-Z]*_CLIENT_ID=/AZURE_CLIENT_ID=/g' \
-  -e 's/[A-Z][A-Z]*_TENANT_ID=/AZURE_TENANT_ID=/g' \
-  -e 's/[A-Z][A-Z]*_CLIENT_SECRET=/AZURE_CLIENT_SECRET=/g' "$1"
-}
-
-fix_wsl2_interop() {
-  for i in $(pstree -np -s $$ | grep -o -E '[0-9]+'); do
-    if [[ -e "/run/WSL/${i}_interop" ]]; then
-      export WSL_INTEROP=/run/WSL/${i}_interop
-    fi
-  done
-}
-
-gch() {
-  result=$(git branch --sort=committerdate --color=always | grep -v '/HEAD\s' |
-    fzf --height 50% --border --ansi --tac --preview-window right:70% \
-    --preview 'git log --oneline --graph --date=short --pretty="format:%C(auto)%cd %h%d %s" $(sed s/^..// <<< {} | cut -d" " -f1) | head -'$LINES |
-    sed 's/^..//' | cut -d' ' -f1)
-
-  if [[ $result != "" ]]; then
-    if [[ $result == remotes/* ]]; then
-      git checkout --track $(echo $result | sed 's#remotes/##')
-    else
-      git checkout "$result"
-    fi
-  fi
-}
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
 if command -v rbenv &> /dev/null
 then
   eval "$(rbenv init -)"
 fi
+
+eval "$(/opt/homebrew/bin/brew shellenv)"
