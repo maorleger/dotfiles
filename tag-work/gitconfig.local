@@ -24,3 +24,5 @@
   helper = cache --timeout=3600
 [push]
   default = current
+[credential]
+	helper = /mnt/c/Program\\ Files/Git/mingw64/libexec/git-core/git-credential-manager.exe
