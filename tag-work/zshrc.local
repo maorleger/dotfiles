@@ -20,7 +20,3 @@ fix_wsl2_interop() {
     fi
   done
 }
-
-# Work specific aliases
-alias withenv='env $(cat .env | xargs)'
-alias r=rush

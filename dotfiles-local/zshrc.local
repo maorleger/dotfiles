@@ -1,6 +1,0 @@
-# Normally we'd just have a single zshrc.local file
-# but because I have a different set of config for 
-# my work and home machines, and they share dotfiles
-# I use this as the control for which local zshrc file
-# to use
-source ~/.zshrc.local.work
