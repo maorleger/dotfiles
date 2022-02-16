@@ -1,12 +1,4 @@
-" These two go together, leave commented for now and see
-" Plug 'google/vim-maktaba'
-" Plug 'google/vim-codefmt'
-
 Plug 'benmills/vimux'
-
-" Consider deleting this too
-" Plug 'bkad/CamelCaseMotion'
-" Plug 'dewyze/vim-ruby-block-helpers'
 
 """"""""""""""""""""""""""""""""""""""""
 " Language plugins

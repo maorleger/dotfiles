@@ -3,4 +3,4 @@
 # my work and home machines, and they share dotfiles
 # I use this as the control for which local zshrc file
 # to use
-source ~/.zshrc.local.home
+source ~/.zshrc.local.work
