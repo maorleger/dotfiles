@@ -1,3 +1,6 @@
+" Remove ALE since we are using Coc anyway
+UnPlug 'dense-analysis/ale'
+
 Plug 'benmills/vimux'
 
 """"""""""""""""""""""""""""""""""""""""
@@ -11,17 +14,21 @@ Plug 'jgdavey/vim-turbux'  " Faster vimux for Ruby
 " JavaScript
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
-Plug 'hashivim/vim-terraform'
-Plug 'jtratner/vim-flavored-markdown'
-Plug 'lmeijvogel/vim-yaml-helper'
-Plug 'mileszs/ack.vim'
 " TypeScript
 Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
 " HTML
 Plug 'tpope/vim-ragtag'
 Plug 'sheerun/vim-polyglot'
 " LSP
 Plug 'OmniSharp/omnisharp-vim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+" Others
+Plug 'hashivim/vim-terraform'
+Plug 'jtratner/vim-flavored-markdown'
+Plug 'lmeijvogel/vim-yaml-helper'
+Plug 'mileszs/ack.vim'
 
 """"""""""""""""""""""""""""""""""""""""
 " Utilities

@@ -129,31 +129,7 @@ endfunction
 
 vnoremap * :<C-u>call <SID>VSetSearch()<CR>/<CR>
 
-let g:ale_enabled = 1                     " Enable linting by default
-let g:ale_lint_on_text_changed = 'normal' " Only lint while in normal mode
-let g:ale_lint_on_insert_leave = 1        " Automatically lint when leaving insert mode
-let g:ale_set_signs = 1                   " Enable signs showing in the gutter to reduce interruptive visuals
-" let g:ale_linters_explicit = 1            " Only run linters that are explicitly listed below
-let g:ale_set_highlights = 0              " Disable highlighting as it interferes with readability and accessibility
-let g:ale_linters = {}
-let g:ale_linters['elixir'] = ['mix']
-let g:ale_linters['cs'] = ['OmniSharp']
-if filereadable(expand(".rubocop.yml"))
-  let g:ale_linters['ruby'] = ['rubocop']
-endif
-
-let g:ale_fixers = {}
-let g:ale_fixers['elixir'] = ['mix_format']
-let g:ale_fix_on_save = 1
-
-nmap <leader>a :ALENextWrap <cr>
-nmap <leader>e :ALEDetail <cr>
-
-let black = system('grep -q black Pipfile')
-if v:shell_error == 0
-  let g:ale_fixers['python'] = ['black']
-  let g:ale_python_black_auto_pipenv = 1
-endif
+let g:ale_enabled = 0 " Disable ALE as we use Coc now
 
 let html_use_css=1
 let html_number_lines=0
@@ -229,15 +205,6 @@ if v:shell_error == 0
 endif
 
 " ========= Shortcuts ========
-
-" ALE
-map <silent> <leader>an :ALENextWrap<CR>
-map <silent> <leader>ap :ALEPreviousWrap<CR>
-map <silent> <leader>aj :ALENextWrap<CR>
-map <silent> <leader>ak :ALEPreviousWrap<CR>
-map <silent> <leader>al :ALELint<CR>
-map <silent> <leader>af :ALEFix<CR>
-map <silent> <leader>ai :ALEInfo<CR>
 
 " NERDTree
 map <silent> <LocalLeader>nt :NERDTreeToggle<CR>
@@ -399,6 +366,21 @@ command! W w
 " Coc only does snippet and additional edit on confirm.
 " turn this on and hate yourself... so commenting for now until I can fix
 " inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+let g:coc_global_extensions = [
+      \ 'coc-tsserver',
+      \ 'coc-prettier',
+      \ ]
+
+nnoremap <silent> K :call CocAction('doHover')<CR>
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gr <Plug>(coc-references)
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+nnoremap <silent> <space>d :<C-u>CocList diagnostics<cr>
+nnoremap <silent> <space>s :<C-u>CocList -I symbols<cr>
+nmap <leader>do <Plug>(coc-codeaction)
+nmap <leader>rn <Plug>(coc-rename)
 
 " close preview window
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif

@@ -7,16 +7,20 @@
     "elixir",
     "eelixir",
     "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
     "html",
     "css",
     "cs"
   ],
+  "coc.preferences.formatOnType": true,
   "languageserver": {
   },
   "codeLens.enable": true,
-  "eslint.autoFixOnSave": true,
   "diagnostic-languageserver.filetypes": {
   },
   "diagnostic-languageserver.formatFiletypes": {
-  }
+  },
+  "prettier.disableSuccessMessage": true
 }

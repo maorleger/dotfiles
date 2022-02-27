@@ -8,6 +8,7 @@ shareKeyVaultEnv() {
 
 updateDotEnv() {
   sed -i -e 's/\${env:\([A-Z_]*\)} = /\1=/g' \
+  -e 's/^export //g' \
   -e 's/[A-Z][A-Z]*_CLIENT_ID=/AZURE_CLIENT_ID=/g' \
   -e 's/[A-Z][A-Z]*_TENANT_ID=/AZURE_TENANT_ID=/g' \
   -e 's/[A-Z][A-Z]*_CLIENT_SECRET=/AZURE_CLIENT_SECRET=/g' "$1"
