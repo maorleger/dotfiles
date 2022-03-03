@@ -79,6 +79,8 @@ autocmd FileType cs setlocal tabstop=4 shiftwidth=4 softtabstop=4
 autocmd FileType ruby runtime ruby_mappings.vim
 autocmd FileType python runtime python_mappings.vim
 autocmd FileType java runtime java_mappings.vim
+autocmd FileType javascript runtime javascript_mappings.vim
+autocmd FileType typescript runtime javascript_mappings.vim
 
 " wstrip plugin
 " don't highlight trailing whitespace
@@ -394,3 +396,11 @@ set updatetime=300
 " don't give |ins-completion-menu| messages.
 set shortmess+=c
 
+" Work and home config
+if filereadable($HOME . "/.vimrc.local.work")
+  source ~/.vimrc.local.work
+endif
+
+if filereadable($HOME . "/.vimrc.local.home")
+  source ~/.vimrc.local.home
+endif
