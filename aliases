@@ -15,6 +15,21 @@ alias s="rspec"
 # Pretty print the path
 alias path='echo $PATH | tr -s ":" "\n"'
 
+# git
+alias gap="git add -p"
+alias gpp="git pull --rebase && git push"
+alias gst="git status"
+alias gup="git fetch upstream && git rebase upstream/main"
+alias gst="git status"
+alias gci="git commit"
+alias gd="git diff"
+
+# docker
+alias dcr="docker-compose run"
+alias dcb="docker-compose build"
+alias dcu="docker-compose up"
+alias dc="docker-compose"
+
 # Include custom aliases
 if [[ -f ~/.aliases.local ]]; then
   source ~/.aliases.local

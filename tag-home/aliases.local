@@ -1,18 +1,3 @@
-# git
-alias gap="git add -p"
-alias gpp="git pull --rebase && git push"
-alias gst="git status"
-alias gup="git fetch upstream && git rebase upstream/main"
-alias gst="git status"
-alias gci="git commit"
-alias gd="git diff"
-
-# docker
-alias dcr="docker-compose run"
-alias dcb="docker-compose build"
-alias dcu="docker-compose up"
-alias dc="docker-compose"
-
 # System
 alias brewlove="brew update && brew upgrade && brew cleanup; brew doctor"
 
