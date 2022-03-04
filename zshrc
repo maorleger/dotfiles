@@ -34,15 +34,7 @@ _load_settings() {
 }
 _load_settings "$HOME/.zsh/configs"
 
-# Local config
-[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
-
-# aliases
-[[ -f ~/.aliases ]] && source ~/.aliases
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-
+# interactive branch picker using fzf
 gch() {
   result=$(git branch --sort=committerdate --color=always | grep -v '/HEAD\s' |
     fzf --height 50% --border --ansi --tac --preview-window right:70% \
@@ -57,3 +49,13 @@ gch() {
     fi
   fi
 }
+
+
+# aliases
+[[ -f ~/.aliases ]] && source ~/.aliases
+
+# fzf
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Local config
+[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
