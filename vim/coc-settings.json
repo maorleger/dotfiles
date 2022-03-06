@@ -12,7 +12,8 @@
     "typescriptreact",
     "html",
     "css",
-    "cs"
+    "cs",
+    "ruby"
   ],
   "coc.preferences.formatOnType": true,
   "languageserver": {
@@ -22,5 +23,9 @@
   },
   "diagnostic-languageserver.formatFiletypes": {
   },
-  "prettier.disableSuccessMessage": true
+  "prettier.disableSuccessMessage": true,
+  "solargraph.diagnostics": true,
+  "solargraph.autoformat": true,
+  "solargraph.formatting": true,
+  "solargraph.hover": true
 }

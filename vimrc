@@ -196,11 +196,6 @@ autocmd FileType ruby,java,python,c,cpp,sql,puppet let b:wstrip_auto = 1
 " Run terraform fmt on terraform files
 autocmd BufWritePre *.tf call terraform#fmt()
 
-" Local config
-if filereadable($HOME . "/.vimrc.local")
-  source ~/.vimrc.local
-endif
-
 " ========= ColorScheme ===========
 set t_8b=[48;2;%lu;%lu;%lum
 set t_8f=[38;2;%lu;%lu;%lum
@@ -210,7 +205,8 @@ endif
 set background=dark
 try
   colorscheme one
-  " highlight Pmenu ctermbg=gray guibg=gray
+  highlight Pmenu ctermbg=lightblue ctermfg=black guibg=darkblue guifg=black
+  highlight PmenuSel ctermbg=lightblue guibg=blue
 catch
 endtry
 
@@ -474,6 +470,7 @@ command! W w
 " inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 let g:coc_global_extensions = [
       \ 'coc-tsserver',
+      \ 'coc-solargraph',
       \ 'coc-prettier',
       \ ]
 
@@ -499,3 +496,9 @@ set updatetime=300
 
 " don't give |ins-completion-menu| messages.
 set shortmess+=c
+
+" Local config
+if filereadable($HOME . "/.vimrc.local")
+  source ~/.vimrc.local
+endif
+
