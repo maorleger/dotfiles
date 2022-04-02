@@ -99,6 +99,7 @@ Plug 'tweekmonster/wstrip.vim'
 """""""""""""""""""""""""""""""""""""""""
 Plug 'rakr/vim-one'
 Plug 'chriskempson/base16-vim'
+Plug 'dracula/vim', { 'as': 'dracula' }
 
 if filereadable(expand("~/.vimrc.bundles.local"))
   source ~/.vimrc.bundles.local

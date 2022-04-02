@@ -11,3 +11,6 @@ alias tf="terraform"
 
 # ruby
 alias be="bundle exec"
+
+# ssh TERM setting
+alias ssh='TERM=xterm-256color ssh'

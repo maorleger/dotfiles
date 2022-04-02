@@ -197,17 +197,20 @@ autocmd FileType ruby,java,python,c,cpp,sql,puppet let b:wstrip_auto = 1
 autocmd BufWritePre *.tf call terraform#fmt()
 
 " ========= ColorScheme ===========
-set t_8b=[48;2;%lu;%lu;%lum
-set t_8f=[38;2;%lu;%lu;%lum
 if (has("termguicolors"))
   set termguicolors
+  set t_8b=[48;2;%lu;%lu;%lum
+  set t_8f=[38;2;%lu;%lu;%lum
 endif
+
 set background=dark
-try
-  colorscheme one
-  highlight Pmenu ctermbg=lightblue ctermfg=black guibg=darkblue guifg=black
-  highlight PmenuSel ctermbg=lightblue guibg=blue
+
+try 
+  packadd! dracula_pro
+  let g:dracula_colorterm = 0
+  colorscheme dracula_pro
 catch
+  colorscheme dracula
 endtry
 
 " ========== LightLine ===============
