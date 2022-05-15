@@ -1,2 +1,0 @@
-alias withenv='env $(cat .env | xargs)'
-alias r=rush

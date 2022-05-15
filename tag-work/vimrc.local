@@ -1,4 +1,0 @@
-" Use mocha at work
-let g:test#javascript#runner = "mocha"
-let g:test#javascript#file_pattern = '\v(tests?/.*|(test)|(spec))\.(js|jsx|coffee|ts|tsx)$'
-let g:test#javascript#mocha#executable = './node_modules/.bin/mocha -r esm -r ts-node/register --full-trace'
