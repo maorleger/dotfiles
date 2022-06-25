@@ -6,20 +6,21 @@ filled in as strings with either
 a global executable or a path to
 an executable
 ]]
--- THESE ARE EXAMPLE CONFIGS FEEL FREE TO CHANGE TO WHATEVER YOU WANT
-
 
 -- general
 lvim.log.level = "warn"
 lvim.format_on_save = true
 lvim.colorscheme = "onedarker"
--- to disable icons and use a minimalist setup, uncomment the following
--- lvim.use_icons = false
 
 -- keymappings [view all the defaults by pressing <leader>Lk]
 lvim.leader = "space"
+
+local keymapOpts = { noremap = true, silent = true }
+
 -- add your own keymapping
-lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
+-- lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
+vim.api.nvim_set_keymap('', '<C-p>', "<cmd>Telescope git_files<cr>", keymapOpts)
+
 -- unmap a default keymapping
 -- lvim.keys.normal_mode["<C-Up>"] = false
 -- edit a default keymapping
@@ -56,6 +57,13 @@ lvim.builtin.which_key.mappings["t"] = {
 }
 
 lvim.builtin.which_key.mappings["sw"] = { "<cmd>Telescope grep_string<cr>", "Word under cursor" }
+
+lvim.builtin.which_key.mappings["r"] = {
+  name = "+Test",
+  f = { "<cmd>wa<cr><cmd>TestNearest<cr>", "Nearest" },
+  b = { "<cmd>wa<cr><cmd>TestFile<cr>", "File" },
+  l = { "<cmd>wa<cr><cmd>TestLast<cr>", "Last" }
+}
 
 -- TODO: User Config for predefined plugins
 -- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
@@ -122,7 +130,7 @@ formatters.setup {
     -- these cannot contain whitespaces, options such as `--line-width 80` become either `{'--line-width', '80'}` or `{'--line-width=80'}`
     extra_args = { "--print-with", "100" },
     ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
-    filetypes = { "typescript", "typescriptreact" },
+    -- filetypes = { "typescript", "typescriptreact" },
   },
 }
 
@@ -149,6 +157,10 @@ lvim.plugins = {
   { "fatih/vim-go" },
   { "folke/trouble.nvim" },
   { "tpope/vim-surround" },
+  { "hashivim/vim-terraform" },
+  { "benmills/vimux" },
+  { "janko/vim-test" },
+  { "christoomey/vim-tmux-navigator" },
 }
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
@@ -156,7 +168,6 @@ lvim.plugins = {
 --   { "BufWinEnter", "*.lua", "setlocal ts=8 sw=8" },
 -- }
 
--- Customizations
--- Slow migration to space as leader
-vim.api.nvim_set_keymap('', '\\', '<Leader>', {})
-vim.api.nvim_set_keymap('', '<C-p>', "<cmd>Telescope git_files<cr>", {})
+-- vimux for tests
+vim.cmd("let test#strategy = 'vimux'")
+vim.cmd("let test#javascript#karma#options = '--esbuild'")
