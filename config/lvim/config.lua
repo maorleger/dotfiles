@@ -57,6 +57,7 @@ lvim.builtin.which_key.mappings["t"] = {
 }
 
 lvim.builtin.which_key.mappings["sw"] = { "<cmd>Telescope grep_string<cr>", "Word under cursor" }
+lvim.builtin.which_key.mappings["bo"] = { "<cmd>BufferLineCloseLeft<cr><cmd>BufferLineCloseRight<cr>", "Close Others" }
 
 lvim.builtin.which_key.mappings["r"] = {
   name = "+Test",
