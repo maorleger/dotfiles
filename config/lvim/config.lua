@@ -46,6 +46,8 @@ vim.api.nvim_set_keymap('', '<C-p>', "<cmd>Telescope git_files<cr>", keymapOpts)
 
 -- Use which-key to add extra bindings with the leader-key prefix
 -- lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
+lvim.builtin.which_key.mappings[">"] = { "<cmd>NvimTreeResize +15<CR>", "Explorer >" }
+lvim.builtin.which_key.mappings["<"] = { "<cmd>NvimTreeResize -15<CR>", "Explorer <" }
 lvim.builtin.which_key.mappings["t"] = {
   name = "+Trouble",
   r = { "<cmd>Trouble lsp_references<cr>", "References" },
