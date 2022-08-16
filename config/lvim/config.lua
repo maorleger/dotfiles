@@ -95,6 +95,7 @@ lvim.builtin.treesitter.ensure_installed = {
 
 lvim.builtin.treesitter.ignore_install = { "haskell" }
 lvim.builtin.treesitter.highlight.enabled = true
+lvim.builtin.treesitter.rainbow.enable = true
 
 -- generic LSP settings
 
@@ -133,7 +134,7 @@ formatters.setup {
     -- these cannot contain whitespaces, options such as `--line-width 80` become either `{'--line-width', '80'}` or `{'--line-width=80'}`
     extra_args = { "--print-with", "100" },
     ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
-    -- filetypes = { "typescript", "typescriptreact" },
+    filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
   },
 }
 
@@ -158,12 +159,13 @@ formatters.setup {
 -- Additional Plugins
 lvim.plugins = {
   { "fatih/vim-go" },
-  { "folke/trouble.nvim" },
+  { "folke/trouble.nvim", cmd = "TroubleToggle" },
   { "tpope/vim-surround" },
   { "hashivim/vim-terraform" },
   { "benmills/vimux" },
   { "janko/vim-test" },
   { "christoomey/vim-tmux-navigator" },
+  { "p00f/nvim-ts-rainbow" }
 }
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
