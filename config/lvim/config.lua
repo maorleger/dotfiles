@@ -48,15 +48,15 @@ vim.api.nvim_set_keymap('', '<C-p>', "<cmd>Telescope git_files<cr>", keymapOpts)
 -- lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
 lvim.builtin.which_key.mappings[">"] = { "<cmd>NvimTreeResize +15<CR>", "Explorer >" }
 lvim.builtin.which_key.mappings["<"] = { "<cmd>NvimTreeResize -15<CR>", "Explorer <" }
-lvim.builtin.which_key.mappings["t"] = {
-  name = "+Trouble",
-  r = { "<cmd>Trouble lsp_references<cr>", "References" },
-  f = { "<cmd>Trouble lsp_definitions<cr>", "Definitions" },
-  d = { "<cmd>Trouble document_diagnostics<cr>", "Diagnostics" },
-  q = { "<cmd>Trouble quickfix<cr>", "QuickFix" },
-  l = { "<cmd>Trouble loclist<cr>", "LocationList" },
-  w = { "<cmd>Trouble workspace_diagnostics<cr>", "Wordspace Diagnostics" },
-}
+-- lvim.builtin.which_key.mappings["t"] = {
+--   name = "+Trouble",
+--   r = { "<cmd>Trouble lsp_references<cr>", "References" },
+--   f = { "<cmd>Trouble lsp_definitions<cr>", "Definitions" },
+--   d = { "<cmd>Trouble document_diagnostics<cr>", "Diagnostics" },
+--   q = { "<cmd>Trouble quickfix<cr>", "QuickFix" },
+--   l = { "<cmd>Trouble loclist<cr>", "LocationList" },
+--   w = { "<cmd>Trouble workspace_diagnostics<cr>", "Wordspace Diagnostics" },
+-- }
 
 lvim.builtin.which_key.mappings["sw"] = { "<cmd>Telescope grep_string<cr>", "Word under cursor" }
 lvim.builtin.which_key.mappings["bo"] = { "<cmd>BufferLineCloseLeft<cr><cmd>BufferLineCloseRight<cr>", "Close Others" }
@@ -75,8 +75,9 @@ lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.notify.active = true
 lvim.builtin.terminal.active = true
 lvim.builtin.nvimtree.setup.view.side = "left"
-lvim.builtin.nvimtree.show_icons.git = 0
-
+lvim.builtin.telescope.pickers.git_files = {
+  show_untracked = true
+}
 -- if you don't want all the parsers change this to a table of the ones you want
 lvim.builtin.treesitter.ensure_installed = {
   "bash",
@@ -159,7 +160,7 @@ formatters.setup {
 -- Additional Plugins
 lvim.plugins = {
   { "fatih/vim-go" },
-  { "folke/trouble.nvim", cmd = "TroubleToggle" },
+  -- { "folke/trouble.nvim", cmd = "TroubleToggle" },
   { "tpope/vim-surround" },
   { "hashivim/vim-terraform" },
   { "benmills/vimux" },
