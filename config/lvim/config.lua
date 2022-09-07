@@ -46,18 +46,6 @@ vim.api.nvim_set_keymap('', '<C-p>', "<cmd>Telescope git_files<cr>", keymapOpts)
 
 -- Use which-key to add extra bindings with the leader-key prefix
 -- lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
-lvim.builtin.which_key.mappings[">"] = { "<cmd>NvimTreeResize +15<CR>", "Explorer >" }
-lvim.builtin.which_key.mappings["<"] = { "<cmd>NvimTreeResize -15<CR>", "Explorer <" }
--- lvim.builtin.which_key.mappings["t"] = {
---   name = "+Trouble",
---   r = { "<cmd>Trouble lsp_references<cr>", "References" },
---   f = { "<cmd>Trouble lsp_definitions<cr>", "Definitions" },
---   d = { "<cmd>Trouble document_diagnostics<cr>", "Diagnostics" },
---   q = { "<cmd>Trouble quickfix<cr>", "QuickFix" },
---   l = { "<cmd>Trouble loclist<cr>", "LocationList" },
---   w = { "<cmd>Trouble workspace_diagnostics<cr>", "Wordspace Diagnostics" },
--- }
-
 lvim.builtin.which_key.mappings["sw"] = { "<cmd>Telescope grep_string<cr>", "Word under cursor" }
 lvim.builtin.which_key.mappings["bo"] = { "<cmd>BufferLineCloseLeft<cr><cmd>BufferLineCloseRight<cr>", "Close Others" }
 
@@ -160,13 +148,13 @@ formatters.setup {
 -- Additional Plugins
 lvim.plugins = {
   { "fatih/vim-go" },
-  -- { "folke/trouble.nvim", cmd = "TroubleToggle" },
   { "tpope/vim-surround" },
   { "hashivim/vim-terraform" },
   { "benmills/vimux" },
   { "janko/vim-test" },
   { "christoomey/vim-tmux-navigator" },
-  { "p00f/nvim-ts-rainbow" }
+  { "p00f/nvim-ts-rainbow" },
+  { "ruanyl/vim-gh-line" }
 }
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
