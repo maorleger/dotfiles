@@ -16,6 +16,7 @@ lvim.colorscheme = "onedarker"
 lvim.leader = "space"
 
 local keymapOpts = { noremap = true, silent = true }
+vim.opt.clipboard = "unnamedplus"
 
 -- add your own keymapping
 -- lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
@@ -123,7 +124,7 @@ formatters.setup {
     -- these cannot contain whitespaces, options such as `--line-width 80` become either `{'--line-width', '80'}` or `{'--line-width=80'}`
     extra_args = { "--print-with", "100" },
     ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
-    filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
+    filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact", "ruby" },
   },
 }
 
