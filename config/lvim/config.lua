@@ -159,16 +159,23 @@ lvim.plugins = {
   { "zbirenbaum/copilot.lua",
     event = { "VimEnter" },
     config = function()
+      ---@diagnostic disable: param-type-mismatch
       vim.defer_fn(function()
         require("copilot").setup {
+          suggestion = {
+            auto_trigger = true
+          },
           plugin_manager_path = get_runtime_dir() .. "/site/pack/packer",
         }
       end, 100)
+      ---@diagnostic enable: param-type-mismatch
     end,
   },
-
   { "zbirenbaum/copilot-cmp",
-    after = { "copilot.lua", "nvim-cmp" },
+    after = { "copilot.lua" },
+    config = function()
+      require("copilot_cmp").setup()
+    end
   },
 }
 lvim.builtin.cmp.formatting.source_names["copilot"] = "(Copilot)"
