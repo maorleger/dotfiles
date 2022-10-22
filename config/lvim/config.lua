@@ -20,6 +20,8 @@ vim.opt.clipboard = "unnamedplus"
 
 -- add your own keymapping
 -- lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
+lvim.keys.normal_mode["H"] = "<cmd>BufferLineCyclePrev<cr>"
+lvim.keys.normal_mode["L"] = "<cmd>BufferLineCycleNext<cr>"
 vim.api.nvim_set_keymap('', '<C-p>', "<cmd>Telescope git_files<cr>", keymapOpts)
 
 -- unmap a default keymapping
