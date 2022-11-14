@@ -149,30 +149,12 @@ lvim.plugins = {
   { "christoomey/vim-tmux-navigator" },
   { "p00f/nvim-ts-rainbow" },
   { "ruanyl/vim-gh-line" },
-  { "zbirenbaum/copilot.lua",
-    event = { "VimEnter" },
-    config = function()
-      ---@diagnostic disable: param-type-mismatch
-      vim.defer_fn(function()
-        require("copilot").setup {
-          suggestion = {
-            auto_trigger = true
-          },
-          plugin_manager_path = get_runtime_dir() .. "/site/pack/packer",
-        }
-      end, 100)
-      ---@diagnostic enable: param-type-mismatch
-    end,
-  },
-  { "zbirenbaum/copilot-cmp",
-    after = { "copilot.lua" },
-    config = function()
-      require("copilot_cmp").setup()
-    end
+  {
+    "ray-x/lsp_signature.nvim",
+    event = "BufRead",
+    config = function() require "lsp_signature".on_attach() end,
   },
 }
-lvim.builtin.cmp.formatting.source_names["copilot"] = "(Copilot)"
-table.insert(lvim.builtin.cmp.sources, 1, { name = "copilot" })
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
 -- lvim.autocommands.custom_groups = {
