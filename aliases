@@ -34,8 +34,3 @@ alias dc="docker-compose"
 if [[ -f ~/.aliases.local ]]; then
   source ~/.aliases.local
 fi
-
-# tmux
-alias tl="tmux list-sessions"
-alias ta="tmux attach -t"
-alias tkill="tmux kill-session -t"
