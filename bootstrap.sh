@@ -13,4 +13,4 @@ echo 'starting dotfiles bootstrap'
 BASEDIR=$(realpath $(dirname "$0"))
 
 echo "rcrc located in $BASEDIR"
-env RCRC="$(BASEDIR)"/rcrc rcup
+env RCRC="$BASEDIR"/rcrc rcup
