@@ -10,3 +10,6 @@
 [ -s "/home/linuxbrew/.linuxbrew" ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 # OSX
 [ -s "/opt/homebrew" ] && eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# Rust
+[[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
