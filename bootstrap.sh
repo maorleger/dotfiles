@@ -9,4 +9,8 @@ sudo apt update
 sudo apt install rcm
 
 echo 'starting dotfiles bootstrap'
-env RCRC="$(pwd)"/rcrc rcup
+
+BASEDIR=$(realpath $(dirname "$0"))
+
+echo "rcrc located in $BASEDIR"
+env RCRC="$(BASEDIR)"/rcrc rcup
