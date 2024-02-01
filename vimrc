@@ -40,6 +40,10 @@ set updatetime=200
 set wrap
 set wildignore+=*.pyc,*.o,*.class,*.lo,.git,vendor/*,node_modules/**,bower_components/**,*/build_gradle/*,*/build_intellij/*,*/build/*,*/cassandra_data/*
 
+" Leader
+nnoremap <SPACE> <Nop>
+let mapleader = " "
+
 if !has('nvim')
   set ttymouse=
 endif
@@ -199,11 +203,8 @@ endif
 set background=dark
 
 try 
-  packadd! dracula_pro
-  let g:dracula_colorterm = 0
-  colorscheme dracula_pro
+  colorscheme base16-tomorrow-night
 catch
-  colorscheme dracula
 endtry
 
 " ========== LightLine ===============
@@ -308,9 +309,9 @@ endif
 " ========= Shortcuts ========
 
 " NERDTree
-map <silent> <LocalLeader>nt :NERDTreeToggle<CR>
-map <silent> <LocalLeader>nr :NERDTree<CR>
-map <silent> <LocalLeader>nf :NERDTreeFind<CR>
+map <silent> <leader>nt :NERDTreeToggle<CR>
+map <silent> <leader>nr :NERDTree<CR>
+map <silent> <leader>nf :NERDTreeFind<CR>
 
 " FZF
 function! SmartFuzzy()
@@ -331,32 +332,32 @@ map <silent> <leader>ft :Tags<CR>
 map <silent> <C-p> :Files<CR>
 
 " Ack
-map <LocalLeader>aw :Ack '<C-R><C-W>'
+map <leader>aw :Ack '<C-R><C-W>'
 
 " TComment
-map <silent> <LocalLeader>cc :TComment<CR>
-map <silent> <LocalLeader>uc :TComment<CR>
+map <silent> <leader>cc :TComment<CR>
+map <silent> <leader>uc :TComment<CR>
 
 " Vimux
-map <silent> <LocalLeader>vl :wa<CR> :VimuxRunLastCommand<CR>
-map <silent> <LocalLeader>vi :wa<CR> :VimuxInspectRunner<CR>
-map <silent> <LocalLeader>vk :wa<CR> :VimuxInterruptRunner<CR>
-map <silent> <LocalLeader>vx :wa<CR> :VimuxClosePanes<CR>
-map <silent> <LocalLeader>vp :VimuxPromptCommand<CR>
-vmap <silent> <LocalLeader>vs "vy :call VimuxRunCommand(@v)<CR>
-nmap <silent> <LocalLeader>vs vip<LocalLeader>vs<CR>
-map <silent> <LocalLeader>ds :call VimuxRunCommand('clear; grep -E "^ *describe[ \(]\|^ *context[ \(]\|^ *it[ \(]" ' . bufname("%"))<CR>
+map <silent> <leader>vl :wa<CR> :VimuxRunLastCommand<CR>
+map <silent> <leader>vi :wa<CR> :VimuxInspectRunner<CR>
+map <silent> <leader>vk :wa<CR> :VimuxInterruptRunner<CR>
+map <silent> <leader>vx :wa<CR> :VimuxClosePanes<CR>
+map <silent> <leader>vp :VimuxPromptCommand<CR>
+vmap <silent> <leader>vs "vy :call VimuxRunCommand(@v)<CR>
+nmap <silent> <leader>vs vip<leader>vs<CR>
+map <silent> <leader>ds :call VimuxRunCommand('clear; grep -E "^ *describe[ \(]\|^ *context[ \(]\|^ *it[ \(]" ' . bufname("%"))<CR>
 
-map <silent> <LocalLeader>rt :!ctags -R --exclude=".git\|.svn\|log\|tmp\|db\|pkg" --extra=+f --langmap=Lisp:+.clj<CR>
+map <silent> <leader>rt :!ctags -R --exclude=".git\|.svn\|log\|tmp\|db\|pkg" --extra=+f --langmap=Lisp:+.clj<CR>
 
-map <silent> <LocalLeader>cj :!clj %<CR>
+map <silent> <leader>cj :!clj %<CR>
 
-map <silent> <LocalLeader>gd :e product_diff.diff<CR>:%!git diff<CR>:setlocal buftype=nowrite<CR>
-map <silent> <LocalLeader>pd :e product_diff.diff<CR>:%!svn diff<CR>:setlocal buftype=nowrite<CR>
+map <silent> <leader>gd :e product_diff.diff<CR>:%!git diff<CR>:setlocal buftype=nowrite<CR>
+map <silent> <leader>pd :e product_diff.diff<CR>:%!svn diff<CR>:setlocal buftype=nowrite<CR>
 
-map <silent> <LocalLeader>nh :nohls<CR>
+map <silent> <leader>nh :nohls<CR>
 
-map <silent> <LocalLeader>bd :bufdo :bd<CR>
+map <silent> <leader>bd :bufdo :bd<CR>
 
 cnoremap <Tab> <C-L><C-D>
 
@@ -365,9 +366,9 @@ nnoremap <silent> j gj
 nnoremap <silent> Y y$
 
 " search for trailing whitespace
-map <silent> <LocalLeader>ws /\s\+$<CR>
+map <silent> <leader>ws /\s\+$<CR>
 
-map <silent> <LocalLeader>pp :set paste!<CR>
+map <silent> <leader>pp :set paste!<CR>
 
 " Pasting over a selection does not replace the clipboard
 xnoremap <expr> p 'pgv"'.v:register.'y'
@@ -467,9 +468,10 @@ nmap <leader>sv :source $MYVIMRC<cr>
 " Coc only does snippet and additional edit on confirm.
 " turn this on and hate yourself... so commenting for now until I can fix
 " inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+let g:coc_disable_startup_warning = 1
 let g:coc_global_extensions = [
       \ 'coc-tsserver',
-      \ 'coc-solargraph',
       \ 'coc-prettier',
       \ ]
 
