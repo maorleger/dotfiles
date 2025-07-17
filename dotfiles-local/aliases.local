@@ -22,3 +22,9 @@ alias gup="git fetch upstream && git rebase upstream/main"
 alias tl="tmux list-sessions"
 alias ta="tmux attach -t"
 alias tkill="tmux kill-session -t"
+
+# dev-tool
+alias dev="/home/maorleger/workspace/azure-sdk-for-js/common/tools/dev-tool/launch.js"
+
+# proxy
+alias withproxy="NODE_TLS_REJECT_UNAUTHORIZED=0 HTTP_PROXY=http://localhost:8080 HTTPS_PROXY=http://localhost:8080"

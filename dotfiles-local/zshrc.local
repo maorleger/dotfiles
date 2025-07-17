@@ -13,3 +13,9 @@
 
 # Rust
 [[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
+
+export PATH=/home/maorleger/.local/bin:$PATH
+
+export PATH=$PATH:/usr/local/go/bin
+
+eval "$(/home/maorleger/.local/bin/mise activate zsh)"
