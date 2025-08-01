@@ -463,34 +463,6 @@ command! W w
 nmap <leader>ev :tabedit $MYVIMRC<cr>
 nmap <leader>sv :source $MYVIMRC<cr>
 
-" ========= COC ===========
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-" Coc only does snippet and additional edit on confirm.
-" turn this on and hate yourself... so commenting for now until I can fix
-" inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
-let g:coc_disable_startup_warning = 1
-let g:coc_global_extensions = [
-      \ 'coc-tsserver',
-      \ 'coc-prettier',
-      \ ]
-
-nnoremap <silent> K :call CocAction('doHover')<CR>
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gr <Plug>(coc-references)
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
-nnoremap <silent> <space>d :<C-u>CocList diagnostics<cr>
-nnoremap <silent> <space>s :<C-u>CocList -I symbols<cr>
-nmap <leader>do <Plug>(coc-codeaction)
-nmap <leader>rn <Plug>(coc-rename)
-
-" close preview window
-autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
-
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 set updatetime=300
 
@@ -501,4 +473,3 @@ set shortmess+=c
 if filereadable($HOME . "/.vimrc.local")
   source ~/.vimrc.local
 endif
-
