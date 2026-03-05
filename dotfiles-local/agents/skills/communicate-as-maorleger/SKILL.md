@@ -1,0 +1,1 @@
+/home/maorleger/dotfiles/./agents/skills/communicate-as-maorleger/SKILL.md

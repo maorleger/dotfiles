@@ -1,2 +1,8 @@
 [tools]
-node = "20"
+dotnet = "10"
+node = "25"
+opencode = "latest"
+rust = "latest"
+
+[settings]
+idiomatic_version_file_enable_tools = ["node"]

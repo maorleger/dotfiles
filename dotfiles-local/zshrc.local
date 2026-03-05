@@ -11,3 +11,8 @@ export PATH=$HOME/.local/bin:$PATH
 export PATH=$PATH:/usr/local/go/bin
 
 eval "$($HOME/.local/bin/mise activate zsh)"
+
+
+# Enable remote caching in repo
+export TURBO_TOKEN=1
+export TURBO_CACHE=local:rw,remote:r
