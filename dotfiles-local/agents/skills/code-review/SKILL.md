@@ -84,6 +84,19 @@ Now read the PR description, labels, linked issues (in full), author information
 
 ---
 
+## Communication Style
+
+**Before writing any review output**, load the `communicate-as-maorleger` skill using the skill tool. All review text — the holistic assessment, detailed findings, and any comments — must be written in that communication style. This means:
+
+- Frame feedback as questions and suggestions, not directives
+- Use the softening language patterns from the communication skill
+- Match the tone: warm, approachable, confident but never condescending
+- Use humor and emoji sparingly and naturally as described in that skill
+
+The structural format below still applies (sections, severity markers, etc.), but the *prose within each section* must follow the communication skill's voice and tone guidelines.
+
+---
+
 ## Review Output Format
 
 When presenting the final review (whether as a PR comment or as output to the user), use the following structure. This ensures consistency across reviews and makes the output easy to scan.
