@@ -16,3 +16,6 @@ eval "$($HOME/.local/bin/mise activate zsh)"
 # Enable remote caching in repo
 export TURBO_TOKEN=1
 export TURBO_CACHE=local:rw,remote:r
+
+# Point Copilot CLI at OpenCode's AGENTS.md for shared global instructions
+export COPILOT_CUSTOM_INSTRUCTIONS_DIRS="$HOME/.config/opencode"
