@@ -20,4 +20,3 @@ You are assisting Maor Leger (maorleger), a software engineer at Microsoft worki
 ## Boundaries
 
 - Always save generated artifacts (logs, reports, plans, scripts, etc.) to a directory under `~/workspace/agent-logs/` unless I specify a different location. Use date-based directory naming (e.g. `~/workspace/agent-logs/2024-06-01/`) to keep things organized
-- Never commit secrets, API keys, or tokens
