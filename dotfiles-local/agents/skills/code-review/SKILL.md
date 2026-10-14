@@ -19,14 +19,17 @@ Based on the input provided (`$ARGUMENTS` is the text the user typed after the s
    - Run: `git diff $ARGUMENTS...HEAD`
 
 4. **PR URL or number** (contains "github.com" or "pull" or looks like a PR number): Review the pull request
-   - Run: `gh pr view $ARGUMENTS` to get PR context
+   - Run: `gh pr view $ARGUMENTS --json baseRefOid,headRefOid,files` to get revisions and files without the PR narrative
    - Run: `gh pr diff $ARGUMENTS` to get the diff
+   - Read the PR description, issues, and comments only in Step 2.
 
 Use best judgement when processing input.
 
+Keep the review read-only unless the user authorizes changes or publication. Do not implement fixes or post comments automatically.
+
 ---
 
-**Reviewer mindset:** Be polite but very skeptical. Your job is to help speed the review process for maintainers, which includes not only finding problems the PR author may have missed but also questioning the value of the PR in its entirety. Treat the PR description and linked issues as claims to verify, not facts to accept. Question the stated direction, probe edge cases, and don't hesitate to flag concerns even when unsure.
+**Reviewer mindset:** Be polite but very skeptical. Your job is to help speed the review process for maintainers, which includes not only finding problems the PR author may have missed but also questioning the value of the PR in its entirety. Treat the PR description and linked issues as claims to verify, not facts to accept. Challenge the approach with evidence. Keep unresolved questions separate from confirmed findings.
 
 ## Review Process
 
@@ -34,11 +37,12 @@ Use best judgement when processing input.
 
 Before analyzing anything, collect as much relevant **code** context as you can. **Critically, do NOT read the PR description, linked issues, or existing review comments yet.** You must form your own independent assessment of what the code does, why it might be needed, what problems it has, and whether the approach is sound — before being exposed to the author's framing. Reading the author's narrative first anchors your judgment and makes you less likely to find real problems.
 
-1. **Diff and file list**: Fetch the full diff and the list of changed files.
+1. **Current revisions, diff, and file list**: Fetch the current PR head, full diff, and list of changed files. Record the compared revisions. Read source from those revisions, not an unrelated local checkout. After feedback fixes or rebases, fetch the current head again. Do not rely on an old diff or previous findings without fresh verification.
 2. **Full source files**: For every changed file, read the **entire source file** (not just the diff hunks). You need the surrounding code to understand invariants, locking protocols, call patterns, and data flow. Diff-only review is the #1 cause of false positives and missed issues.
 3. **Consumers and callers**: If the change modifies a public/internal API, a type that others depend on, or a virtual/interface method, search for how consumers use the functionality. Grep for callers, usages, and test sites. Understanding how the code is consumed reveals whether the change could break existing behavior or violate caller assumptions.
 4. **Key utility/helper files**: If the diff calls into shared utilities, read those to understand the contracts (thread-safety, idempotency, etc.).
 5. **Git history**: Check recent commits to the changed files (`git log --oneline -20 -- <file>`). Look for related recent changes, reverts, or prior attempts to fix the same problem. This reveals whether the area is actively churning, whether a similar fix was tried and reverted, or whether the current change conflicts with recent work.
+6. **Review guidance**: Read the repository and package-specific instructions. Load only the guidance relevant to the changed surface. Apply the target language's rules, not JavaScript conventions to every repository.
 
 ### Step 1: Form an Independent Assessment
 
@@ -57,30 +61,60 @@ Now read the PR description, labels, linked issues (in full), author information
 
 1. **PR metadata**: Fetch the PR description, labels, linked issues, and author. Read linked issues in full — they often contain the repro, root cause analysis, and constraints the fix must satisfy.
 2. **Related issues**: Search for other open issues in the same area (same labels, same component). This can reveal known problems the PR should also address, or constraints the author may not be aware of.
-3. **Existing review comments**: Check if there are already review comments on the PR to avoid duplicating feedback.
+3. **Existing review comments**: Compare each candidate finding with current comments by root cause and failure scenario, not wording. Do not repeat an issue under a different symptom or file. Note existing blockers in the assessment without drafting duplicate comments. If the user requests only new findings, return only unreported issues.
 4. **Reconcile your assessment with the author's claims.** Where your independent reading of the code disagrees with the PR description or issue, investigate further — but do not simply defer to the author's framing. If the PR claims a bug fix, a performance improvement, or a behavioral correction, verify those claims against the code and any provided evidence. If your independent assessment found problems the PR narrative doesn't acknowledge, those problems are more likely to be real, not less.
 5. **Update your holistic assessment** if the additional context reveals information that genuinely changes your evaluation (e.g., a linked issue proves the bug is real, or an existing review comment already identified the same concern). But do not soften findings just because the PR description sounds reasonable.
 
 ### Step 3: Detailed Analysis
 
 1. **Focus on what matters.** Prioritize bugs, performance regressions, safety issues, race conditions, resource management problems, incorrect assumptions about data or state, and API design problems. Do not comment on trivial style issues unless they violate an explicit rule below.
-2. **Consider collateral damage.** For every changed code path, actively brainstorm: what other scenarios, callers, or inputs flow through this code? Could any of them break or behave differently after this change? If you identify any plausible risk — even one you can't fully confirm — surface it so the author can evaluate. Do not dismiss behavioral changes because you believe the fix justifies them. The tradeoff is the author's decision — your job is to make it visible.
-3. **Be specific and actionable.** Every comment should tell the author exactly what to change and why. Reference the relevant convention. Include evidence of how you verified the issue is real, e.g., "looked at all callers and none of them validate this parameter".
-4. **Flag severity clearly:**
+2. **Consider collateral damage.** Trace affected callers and inputs for every changed code path. Establish whether the failure scenario can reach this code. Inspect compiler checks, schemas, service contracts, and caller guards. Report confirmed regressions even when the fix otherwise helps. For unresolved material risks, state the evidence and missing facts under Questions for Human Review. Do not report impossible inputs or unsupported hypothetical failures as bugs.
+3. **Be specific and actionable.** Give the exact file and lines at the reviewed revision. Explain the failure scenario, expected behavior, actual behavior, and smallest suitable fix. Reference the relevant contract or convention.
+4. **Flag severity and merge impact separately:**
    - ❌ **error** — Must fix before merge. Bugs, security issues, API violations, test gaps for behavior changes.
-   - ⚠️ **warning** — Should fix. Performance issues, missing validation, inconsistency with established patterns.
+   - ⚠️ **warning** — Material concern. State whether it blocks merge or is advisory; severity alone does not determine the verdict.
    - 💡 **suggestion** — Consider changing. Style improvements, minor readability wins, optional optimizations.
 5. **Don't pile on.** If the same issue appears many times, flag it once on the primary file with a note listing all affected files. Do not leave separate comments for each occurrence.
 6. **Respect existing style.** When modifying existing files, the file's current style takes precedence over general guidelines.
-7. **Don't flag what CI catches.** Do not flag issues that a linter, typechecker, compiler, analyzer, or CI build step would catch, e.g., missing imports, unsupported syntax, formatting. Assume CI will run separately.
+7. **Don't flag what CI catches.** Omit issues that existing lint, type-check, build, or other required CI checks enforce. Verify the relevant check before claiming that CI covers a concern. Do not confuse a test gap with an existing test that fails.
 8. **Avoid false positives.** Before flagging any issue:
    - **Verify the concern actually applies** given the full context, not just the diff. Open the surrounding code to check. Confirm the issue isn't already handled by a caller, callee, or wrapper layer before claiming something is missing.
    - **Skip theoretical concerns with negligible real-world probability.** "Could happen" is not the same as "will happen."
-   - **If you're unsure, either investigate further until you're confident, or surface it explicitly as a low-confidence question rather than a firm claim.** Do not speculate about issues you have no concrete basis for. Every comment should be worth the reader's time.
+   - **If you're unsure, investigate further.** If concrete evidence leaves a material uncertainty, put it under Questions for Human Review. State what fact or test can resolve it. Do not present uncertainty as a confirmed defect.
    - **Trust the author's context.** The author knows their codebase. If a pattern seems odd but is consistent with the repo, assume it's intentional.
-   - **Never assert that something "does not exist," "is deprecated," or "is unavailable" based on training data alone.** Your knowledge has a cutoff date. When uncertain, ask rather than assert.
+   - **Verify external behavior from authoritative sources.** Use official specifications, documentation, or runtime source for the supported versions. Distinguish a specification guarantee from an observed implementation detail. Do not infer availability or deprecation from training data alone.
 9. **Ensure code suggestions are valid.** Any code you suggest must be syntactically correct and complete. Ensure any suggestion would result in working code.
-10. **Label in-scope vs. follow-up.** Distinguish between issues the PR should fix and out-of-scope improvements. Be explicit when a suggestion is a follow-up rather than a blocker.
+10. **Label in-scope vs. follow-up.** Apply the [scope and proportionality gate](#scope-and-proportionality-gate) before reporting findings. Distinguish between issues the PR should fix and out-of-scope improvements. Be explicit when a suggestion is a follow-up rather than a blocker.
+
+### Evidence for Failures and Fixes
+
+- **Provide a small demonstration.** For substantive behavior findings, include a minimal input, call sequence, or regression test. Prefer public interfaces and existing test patterns. Give the intended test filename when useful.
+- **Run the smallest relevant reproduction when feasible.** State the reviewed revision, command, and observed result. If you cannot execute it, label the example unexecuted and state the limitation. Code reasoning can establish a finding, but do not claim an execution result without one.
+- **Prove proposed fixes when authorized.** Demonstrate failure before the fix and success after it. Ensure the test exercises the reported scenario. A passing suite alone does not prove the fix. When useful, remove the behavior temporarily to confirm that the test detects its absence. Restore any temporary edits after the experiment.
+
+### Cross-Cutting Analysis
+
+Inspect relevant sibling packages, callers, and platforms for shared behavior or related defects.
+
+#### Cross-Language Consistency
+
+Use the four tier-1 languages as design references: JavaScript/TypeScript, Python, .NET, and Java. For JavaScript reviews, compare `azure-sdk-for-python`, `azure-sdk-for-net`, and `azure-sdk-for-java`, in that order. For another target language, skip its repository in that sequence and include `azure-sdk-for-js` as a reference.
+
+**Prefer consistency within the target language over consistency between languages.** Start with its design guidelines, core libraries, and sibling packages. Use other languages to evaluate the design, not to copy their API shapes or implementation patterns. A different implementation is not itself a defect. Explain which language convention or runtime constraint justifies a difference.
+
+Compare the layer that answers the design question:
+
+| Changed behavior or design         | What to compare                                                                                                                                                                                                                   |
+| ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **LRO implementation**             | The same service operation, generated polling helper, core poller, and handwritten adapters. Trace initial-response access, operation IDs, result selection, polling intervals, cancellation, and resume behavior where relevant. |
+| **Package implementation**         | Equivalent customer scenarios in the same service SDK. Compare shared-core versus package-specific logic, workarounds, serialization, error handling, retries, and resource lifetime.                                             |
+| **Public API**                     | Equivalent capabilities and customer workflows: client hierarchy, options, returned information, pagination, LROs, and preview boundaries. Compare semantics and usability, not identical names, types, or async syntax.          |
+| **Generator or protocol behavior** | Equivalent TypeSpec inputs and emitted clients, plus their runtime helpers. For streaming, compare framing, event dispatch, deserialization, errors, and cleanup against the protocol contract.                                   |
+
+- **Ask whether the workaround is needed elsewhere.** If not, find the smoking gun that explains why the target language needs it. Trace the equivalent scenario through source and tests. Identify the contract, helper, callback, or runtime behavior that makes the difference.
+- **Look for missing capabilities and simpler designs.** Ask: "Do we have the same parity, or are we missing anything?" Determine whether another implementation avoids the problem or merely shares it. Agreement between languages does not prove correctness.
+- **Compare equivalent versions and scenarios.** Account for service API versions, core library versions, runtime support, and GA versus beta status. Use released packages when claiming shipped precedent. Cite the relevant source, tests, and revisions. State any limits on the comparison.
+- **Keep the comparison focused.** Inspect only relevant packages and paths in the reference order. Do not audit every language repository for an unrelated local change. Other languages provide comparison and consistency evidence; they do not expand the requested implementation scope.
 
 ---
 
@@ -93,13 +127,13 @@ Now read the PR description, labels, linked issues (in full), author information
 - Match the tone: warm, approachable, confident but never condescending
 - Use humor and emoji sparingly and naturally as described in that skill
 
-The structural format below still applies (sections, severity markers, etc.), but the *prose within each section* must follow the communication skill's voice and tone guidelines.
+The structural format below still applies (sections, severity markers, etc.), but the _prose within each section_ must follow the communication skill's voice and tone guidelines.
 
 ---
 
 ## Review Output Format
 
-When presenting the final review (whether as a PR comment or as output to the user), use the following structure. This ensures consistency across reviews and makes the output easy to scan.
+For a complete review, use the following structure. For a focused follow-up, answer only the requested question or scope. Do not repeat the full review unless requested.
 
 ### Structure
 
@@ -120,9 +154,15 @@ When presenting the final review (whether as a PR comment or as output to the us
 
 #### ✅/⚠️/❌ <Category Name> — <Brief description>
 
-<Explanation with specifics. Reference code, line numbers, interleavings, etc.>
+**Merge impact**: <Merge-blocking / Advisory; omit for verified positives>
+
+<Failure scenario, evidence, exact file/lines, and suggested change. Include a small reproduction when useful; state whether you executed it.>
 
 (Repeat for each finding category. Group related findings under a single heading.)
+
+### Questions for Human Review
+
+<Include only unresolved material concerns. Give the evidence, missing fact or test, and effect on the merge decision. Omit this section when empty.>
 ```
 
 ### Guidelines
@@ -133,22 +173,26 @@ When presenting the final review (whether as a PR comment or as output to the us
   - ⚠️ for warnings or impactful suggestions (should fix, or follow-up)
   - ❌ for errors (must fix before merge)
   - 💡 for minor suggestions or observations (nice-to-have)
-- **Cross-cutting analysis** should be included when relevant: check whether related code (sibling types, callers, other platforms) is affected by the same issue or needs a similar fix.
+- **Cross-cutting analysis**: Apply the [cross-language consistency guidance](#cross-language-consistency) when relevant. Report meaningful design differences, missing capabilities, and the evidence that explains them. Prefer the target language's conventions.
 - **Test quality** should be assessed as its own finding when tests are part of the PR.
 - **Summary** gives a clear verdict: LGTM (no blocking issues — use only when confident), Needs Human Review (code may be correct but you have unresolved concerns or uncertainty that require human judgment), Needs Changes (with blocking issues listed), or Reject (explaining why this should be closed outright). **Never give a blanket LGTM when you are unsure.** When in doubt, use "Needs Human Review" and explain what a human should focus on.
 - Keep the review concise but thorough. Every claim should be backed by evidence from the code.
+
+### Copy-Paste Review Comments
+
+When requested, provide one short, standalone comment per finding in the user's voice. Explain the failure and ask a concrete question. Prefer a small test when it demonstrates the issue more clearly than prose. Honor any requested limit or blockers-only scope. Include attribution only when requested. Recheck the PR head and existing comments before authorized publication.
 
 ### Verdict Consistency Rules
 
 The summary verdict **must** be consistent with the findings in the body. Follow these rules:
 
-1. **The verdict must reflect your most severe finding.** If you have any ⚠️ findings, the verdict cannot be "LGTM." Use "Needs Human Review" or "Needs Changes" instead. Only use "LGTM" when all findings are ✅ or 💡 and you are confident the change is correct and complete.
+1. **Base the verdict on merge safety, not emoji count.** Use "Needs Changes" for confirmed blockers. Use "Needs Human Review" for unresolved material risks. Advisory findings do not prevent "LGTM" if you are confident the change is correct and complete.
 
-2. **When uncertain, always escalate to human review.** If you are unsure whether a concern is valid, whether the approach is sufficient, or whether you have enough context to judge, the verdict must be "Needs Human Review" — not LGTM. Your job is to surface concerns for human judgment, not to give approval when uncertain. A false LGTM is far worse than an unnecessary escalation.
+2. **Escalate material uncertainty to human review.** Identify the unresolved concern and the evidence needed to resolve it. Do not approve a change with unresolved doubts about its correctness or completeness. Unsupported hypothetical concerns do not justify escalation.
 
-3. **Separate code correctness from approach completeness.** A change can be correct code that is an incomplete approach. If you believe the code is right for what it does but the approach is insufficient (e.g., treats symptoms without investigating root cause, silently masks errors that should be diagnosed, fixes one instance but not others), the verdict must reflect the gap — do not let "the code itself looks fine" collapse into LGTM.
+3. **Separate code correctness from approach completeness.** Judge completeness against the agreed problem and supported contract, not every neighboring edge case. A narrower correct approach is not incomplete merely because a broader solution is possible. If the approach fails the scoped goal or masks a required failure, the verdict must reflect that gap. Apply the [scope and proportionality gate](#scope-and-proportionality-gate) before treating additional work as a blocker.
 
-4. **Classify each ⚠️ and ❌ finding as merge-blocking or advisory.** Before writing your summary, decide for each finding: "Would I be comfortable if this merged as-is?" If any answer is "no," the verdict must be "Needs Changes." If any answer is "I'm not sure," the verdict must be "Needs Human Review."
+4. **Classify each finding by merge impact.** Mark confirmed findings as merge-blocking or advisory. Reserve ❌ for confirmed blockers. Put unresolved material concerns under Questions for Human Review. If blockers and uncertainties coexist, use "Needs Changes" and also explain the unresolved concerns.
 
 5. **Devil's advocate check before finalizing.** Re-read all your ⚠️ findings. For each one, ask: does this represent an unresolved concern about the approach, scope, or risk of masking deeper issues? If so, the verdict must reflect that tension. Do not default to optimism because the diff is small or the code is obviously correct at a syntactic level.
 
@@ -175,6 +219,20 @@ Before reviewing individual lines of code, evaluate the PR as a whole. Consider 
 - **Check whether the PR solves the right problem at the right layer.** Look for whether it addresses root cause or applies a band-aid. Prefer fixing the actual source of an issue over adding workarounds to production code.
 - **When a PR takes a fundamentally wrong approach, redirect early.** Don't iterate on implementation details of a flawed design. Push back on the overall direction before the contributor invests more time.
 - **Ask "Why not just X?" — always prefer the simplest solution.** When a PR uses a complex approach, challenge it with the simplest alternative that could work. The burden of proof is on the complex solution.
+- **Verify concrete alternatives.** Consider built-ins in supported runtimes, existing core utilities, and fixes in the generator or source definition. Explain any constraint that makes the simpler solution insufficient. Base compatibility code on real consumers or documented contracts, not hypothetical future needs.
+
+### Scope and Proportionality Gate
+
+**Optimize for the smallest correct solution to the agreed problem, not the elimination of every adjacent imperfection.**
+
+- **Establish the required invariant and non-goals.** State what this PR must guarantee and which existing behaviors it must preserve. Do not silently expand those requirements during review.
+- **Separate a valid observation from a merge requirement.** Explain whether a finding exposes an introduced regression, prevents the scoped fix from working, or proposes additional hardening. A reproducible edge case establishes behavior; it does not automatically establish that this PR must change it.
+- **Consider subtraction before addition.** When new machinery has a bug, first ask whether that machinery is necessary. Removing an unnecessary validator can be a better fix than making it increasingly comprehensive.
+- **Separate correctness from policy.** Protocol validity, parsing strictness, compatibility, and scheduling policy are distinct decisions. Do not use a local correctness argument to introduce a new policy without making the tradeoff explicit.
+- **Interrupt expanding feedback loops.** If successive fixes add special cases, validators, helpers, or contradictory behavior, stop patching locally. Reassess the whole approach against the original invariant. Present a smaller alternative or identify the decision that needs maintainer judgment.
+- **Do not let incidental promises manufacture requirements.** Check whether descriptions and new tests express an intended contract or merely describe the current implementation. Correct an accidental overclaim rather than building a subsystem to satisfy it. Do not discard established contracts or necessary regression tests to make the patch smaller.
+- **Respect explicit tradeoff decisions.** Record accepted limitations and their rationale. Do not repeatedly demand the rejected design without new evidence. Still surface newly demonstrated regressions or materially different consequences.
+- **Use a bounded completion criterion.** The scoped defect is fixed, required behavior is preserved, and no material introduced regression remains. Optional hardening belongs in a separate proposal, not an endless sequence of blockers.
 
 ### Cost-Benefit & Complexity
 
@@ -189,7 +247,9 @@ Before reviewing individual lines of code, evaluate the PR as a whole. Consider 
 
 ### Risk & Compatibility
 
-- **Flag breaking changes and require formal process.** Any behavioral change that could affect downstream consumers needs documentation, API review, and explicit approval — even when the change improves the codebase internally.
+- **Establish the released baseline.** Before calling a removal or signature change breaking, verify that it exists in the last released GA version. Do not use unreleased `main` or beta-only changes as the stable baseline.
+- **Apply the package's stability policy.** Inspect whether affected models are reachable only through beta operations. A GA package does not make every operation or model stable. Verify precedent in released packages, not just current source.
+- **Flag breaking changes and require formal process.** Apply the repository's approval and documentation requirements to confirmed breaks in the stable contract. Distinguish intentional breaks in a major release from accidental regressions.
 - **Assess regression risk proportional to the change's blast radius.** High-risk changes to stable code need proportionally higher value and more thorough validation.
 
 ### Codebase Fit & History
@@ -208,8 +268,8 @@ Before reviewing individual lines of code, evaluate the PR as a whole. Consider 
 
 ## Azure SDK Design Guidelines
 
-- **Follow established Azure SDK design guidelines.** Ensure public APIs follow the Azure SDK design guidelines for JavaScript / TypeScript, including naming conventions, async patterns, configuration patterns, and error handling.
-- For the full set of rules (sections 1–29 covering naming, client design, versioning, pagination, LRO, auth, logging, testing, packaging, and more), consult the full [Azure SDK Design Guidelines](references/azure-sdk-guidelines.md).
+- **Use the applicable authority.** Apply the repository's canonical reviewer instructions and current design guidelines for the target language and package type.
+- Use the [JavaScript / TypeScript reference](references/azure-sdk-guidelines.md) and checklist below as an index, not universal rules. Load only relevant sections. If they conflict with current authoritative guidance, use that guidance. Do not impose SDK-only conventions on tooling or other languages.
 
 ---
 

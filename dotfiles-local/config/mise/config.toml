@@ -1,7 +1,6 @@
 [tools]
 dotnet = "10"
-node = "25"
-opencode = "latest"
+node = "24"
 rust = "latest"
 
 [settings]

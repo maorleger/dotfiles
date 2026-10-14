@@ -1,0 +1,7 @@
+pnpm
+@typespec/compiler
+@azure-tools/typespec-client-generator-cli
+@github/copilot
+pyright
+turbo
+typescript-language-server
